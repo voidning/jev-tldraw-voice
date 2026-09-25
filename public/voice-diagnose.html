@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>语音识别诊断 · Jev × tldraw</title>
+<style>
+  :root { color-scheme: light; --ink:#202725; --muted:#6b766f; --line:#e2e7e1; --green:#276a47; --paper:#f8f8f5; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:26px 22px 60px; background:var(--paper); color:var(--ink);
+    font: 13px/1.65 Inter,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif; }
+  header { max-width:940px; margin:0 auto 20px; }
+  h1 { font-size:21px; letter-spacing:-.02em; margin:0 0 6px; }
+  .lede { color:var(--muted); font-size:12px; margin:0; }
+  main { max-width:940px; margin:0 auto; display:grid; gap:14px; }
+  section { background:#fff; border:1px solid var(--line); border-radius:13px; padding:16px 18px; }
+  h2 { font-size:11px; font-weight:700; letter-spacing:.1em; color:#79857d; margin:0 0 11px; text-transform:uppercase; }
+  .engine { font-size:12px; color:var(--muted); word-break:break-all; }
+  .engine b { color:var(--ink); font-weight:600; }
+  .mic-row { display:flex; align-items:center; gap:14px; }
+  button { font:inherit; cursor:pointer; }
+  #mic { min-width:150px; padding:11px 20px; border:1px solid var(--green); border-radius:10px;
+    background:var(--green); color:#fff; font-size:13px; }
+  #mic.on { background:#c14738; border-color:#c14738; }
+  #timer { font-variant-numeric:tabular-nums; color:var(--muted); font-size:12px; }
+  .live { margin-top:14px; min-height:46px; padding:11px 13px; border:1px dashed #d8e2da;
+    border-radius:9px; background:#f6faf7; color:#8d9791; font-size:15px; }
+  .live.has { color:#3c4540; }
+  .script { margin-bottom:13px; }
+  .script h3 { font-size:12px; margin:0 0 6px; font-weight:700; }
+  ol.lines { list-style:none; margin:0; padding:0; display:grid; gap:3px; }
+  ol.lines li { display:flex; align-items:baseline; gap:8px; padding:5px 9px; border-radius:7px;
+    cursor:pointer; font-size:13px; }
+  ol.lines li:hover { background:#f2f7f3; }
+  ol.lines li.now { background:#e7f2ea; box-shadow:inset 0 0 0 1px #cfe4d6; }
+  ol.lines li.hit { color:#237349; }
+  ol.lines li.free { color:#9aa4a0; }
+  ol.lines b { flex:none; width:17px; color:#9aa4a0; font-weight:600; text-align:right; }
+  .got { display:block; margin:2px 0 0 25px; color:#237349; font-size:12px; }
+  .got.bad { color:#ad4c3e; }
+  .log { max-height:330px; overflow:auto; }
+  .log table { width:100%; border-collapse:collapse; font-size:12px; }
+  .log th { text-align:left; color:#9aa4a0; font-weight:600; padding:4px 7px; border-bottom:1px solid var(--line); }
+  .log td { padding:5px 7px; border-bottom:1px solid #f1f4f0; vertical-align:top; }
+  .log td.t { color:#9aa4a0; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .log .ref { color:#6b766f; }
+  .actions { display:flex; gap:9px; flex-wrap:wrap; }
+  .actions button { padding:8px 14px; border:1px solid #d5ded6; border-radius:8px; background:#fff; color:#3c4540; font-size:12px; }
+  .actions button:hover { border-color:#a9c6b4; color:var(--green); }
+  .tip { margin:11px 0 0; font-size:12px; color:var(--muted); }
+  kbd { padding:1px 5px; border:1px solid #d8ded8; border-bottom-width:2px; border-radius:4px; background:#fafbf9; font-size:11px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>语音识别诊断</h1>
+  <p class="lede">独立页面，不碰主应用。点一句台词把它标成「正在念」，然后对着麦克风念——页面只记浏览器听成了什么，不做任何理解与纠错。换 Chrome / Edge / Safari 各跑一遍，差别就是免费的引擎对比。</p>
+</header>
+<main>
+  <section>
+    <h2>识别引擎</h2>
+    <div class="engine" id="engine">读取中…</div>
+  </section>
+
+  <section>
+    <h2>麦克风</h2>
+    <div class="mic-row">
+      <button id="mic" type="button">开始聆听</button>
+      <span id="timer">未开始</span>
+    </div>
+    <div class="live" id="live">未定稿的识别结果会出现在这里。</div>
+  </section>
+
+  <section>
+    <h2>参考台词（点击标记正在念的那一句）</h2>
+    <div id="scripts"></div>
+    <p class="tip">念错、念漏、识别成错字都照原样记下来，不要纠正自己。每句念完停顿一下再念下一句。</p>
+  </section>
+
+  <section>
+    <h2>记录</h2>
+    <div class="log">
+      <table>
+        <thead><tr><th>时间</th><th>参考台词</th><th>浏览器识别的原文</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="3" style="color:#9aa4a0">还没有记录。</td></tr></tbody>
+      </table>
+    </div>
+    <div class="actions" style="margin-top:13px">
+      <button type="button" id="copy">复制全部</button>
+      <button type="button" id="download">下载 JSON</button>
+      <button type="button" id="clear">清空</button>
+    </div>
+    <p class="tip">跑完把「复制全部」的结果贴回对话里就行。诊断页只在本机运行，音频不经任何服务器。</p>
+  </section>
+</main>
+
+<script>
+const SCRIPTS = [
+  { title: '一、流程图', lines: [
+    '在这里建一个圆', '在它下面建一个矩形', '在它下面建一个菱形',
+    '在圆里写“开始”', '在矩形里写“处理订单”', '在菱形里写“结束”',
+    '把圆连到矩形', '把矩形连到菱形', '把圆放大一点',
+    '把连到“结束”的矩形改成和圆一样宽', '看全部',
+  ]},
+  { title: '二、一排卡片', lines: [
+    '在这里建一个矩形', '再复制三个', '把它们排成一行',
+    '第一个改成红色', '第二个改成橙色', '第三个改成绿色', '第四个改成蓝色',
+    '让它们顶对齐', '看全部',
+  ]},
+  { title: '三、结构图', lines: [
+    '在这里建一个圆', '在它里面写“开始”', '在它右边建一个矩形', '在它里面写“审核”',
+    '在它右边建一个菱形', '在它里面写“结束”', '把圆连到矩形', '把矩形连到菱形',
+    '把连到“结束”的那个矩形改成橙色', '把连到“审核”的那个圆形锁定', '看全部',
+  ]},
+  { title: '四、混合指令', lines: [
+    '在这里建一个圆，然后在它里面写“开始”，然后把它改成绿色',
+    '第一个改成蓝色，第二个改成红色',
+    '算了',
+  ]},
+]
+
+const Window = window
+const Constructor = Window.SpeechRecognition || Window.webkitSpeechRecognition
+document.getElementById('engine').innerHTML =
+  '<b>接口：</b>' + (Constructor ? 'Web Speech API 可用' : '不可用（这个浏览器没有 SpeechRecognition）') + '<br>' +
+  '<b>浏览器：</b>' + navigator.userAgent + '<br>' +
+  '<b>语言：</b>zh-CN ｜ <b>连续：</b>是 ｜ <b>未定稿：</b>开'
+
+const rows = []
+let current = null      // { title, index, text }
+let recognition = null
+let want = false
+let startedAt = 0
+let timerHandle = null
+let restartHandle = null
+const seen = new Set()
+
+const rowsEl = document.getElementById('rows')
+const liveEl = document.getElementById('live')
+const timerEl = document.getElementById('timer')
+const micEl = document.getElementById('mic')
+
+function buildScripts() {
+  const host = document.getElementById('scripts')
+  SCRIPTS.forEach(script => {
+    const box = document.createElement('div')
+    box.className = 'script'
+    const title = document.createElement('h3')
+    title.textContent = script.title
+    const list = document.createElement('ol')
+    list.className = 'lines'
+    script.lines.forEach((text, index) => {
+      const item = document.createElement('li')
+      item.dataset.title = script.title
+      item.dataset.index = String(index)
+      item.innerHTML = '<b>' + (index + 1) + '</b><span class="txt"></span>'
+      item.querySelector('.txt').textContent = text
+      item.addEventListener('click', () => {
+        document.querySelectorAll('ol.lines li.now').forEach(el => el.classList.remove('now'))
+        item.classList.add('now')
+        current = { title: script.title, index, text }
+      })
+      list.appendChild(item)
+    })
+    box.append(title, list)
+    host.appendChild(box)
+  })
+}
+buildScripts()
+
+function markHit(title, index) {
+  document.querySelectorAll('ol.lines li').forEach(el => {
+    if (el.dataset.title === title && Number(el.dataset.index) === index) el.classList.add('hit')
+  })
+}
+
+function render() {
+  if (!rows.length) {
+    rowsEl.innerHTML = '<tr><td colspan="3" style="color:#9aa4a0">还没有记录。</td></tr>'
+    return
+  }
+  const strip = value => value.replace(/[\s，。、！？；：“”"'‘’]/g, '')
+  rowsEl.innerHTML = rows.map(row => {
+    if (!row.reference) {
+      return '<tr><td class="t">' + row.at + ' ms</td><td class="ref">（未标记）</td><td>' + esc(row.text) + '</td></tr>'
+    }
+    const ok = strip(row.text) === strip(row.reference)
+    return '<tr><td class="t">' + row.at + ' ms</td><td class="ref">' + esc(row.reference) + '</td><td>' +
+      (ok ? '<span style="color:#237349">' + esc(row.text) + '</span>'
+          : '<b style="color:#ad4c3e">' + esc(row.text) + '</b>') +
+    '</td></tr>'
+  }).join('')
+}
+
+function esc(value) {
+  return String(value).replace(/[&<>"]/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[ch]))
+}
+
+function collect(results, start) {
+  const final = []
+  let interim = ''
+  for (let i = start; i < results.length; i++) {
+    const result = results[i]
+    const text = String((result && result[0] && result[0].transcript) || '')
+    if (!text.trim()) continue
+    if (result.isFinal) { if (seen.has(i)) continue; seen.add(i); final.push(text) }
+    else interim += text + ' '
+  }
+  return { final, interim: interim.trim() }
+}
+
+function start() {
+  if (!Constructor) return
+  const recognitionNow = new Constructor()
+  recognition = recognitionNow
+  recognitionNow.lang = 'zh-CN'
+  recognitionNow.continuous = true
+  recognitionNow.interimResults = true
+  want = true
+  startedAt = performance.now()
+  micEl.textContent = '停止聆听'
+  micEl.classList.add('on')
+  timerHandle = setInterval(() => { timerEl.textContent = '已听 ' + Math.round((performance.now() - startedAt) / 1000) + ' 秒' }, 200)
+
+  recognitionNow.onresult = event => {
+    const result = collect(event.results, event.resultIndex)
+    liveEl.textContent = result.interim || '（未定稿为空）'
+    liveEl.classList.toggle('has', Boolean(result.interim))
+    for (const text of result.final) {
+      rows.push({ at: Math.round(performance.now() - startedAt), reference: current ? current.text : '', title: current ? current.title : '', index: current ? current.index : -1, text: text.trim() })
+      if (current) markHit(current.title, current.index)
+      render()
+    }
+  }
+  // 错误也要留痕：no-speech 频繁说明停顿判断不合读者的节奏，network 频繁说明
+  // 识别请求在链路上出了问题——这两件事看起来都像「识别不准」，但药完全不同。
+  recognitionNow.onerror = event => {
+    rows.push({ at: Math.round(performance.now() - startedAt), reference: '', title: '', index: -1, text: '⚠ error: ' + event.error })
+    render()
+    if (['not-allowed', 'service-not-allowed', 'audio-capture', 'language-not-supported'].includes(event.error)) {
+      stop()
+      timerEl.textContent = '不可用：' + event.error
+    }
+  }
+  recognitionNow.onend = () => {
+    if (!want) return
+    restartHandle = setTimeout(() => {
+      if (!want || recognition !== recognitionNow) return
+      seen.clear()
+      try { recognitionNow.start() } catch { stop() }
+    }, 250)
+  }
+  try { recognitionNow.start() } catch { stop(); timerEl.textContent = '启动失败' }
+}
+
+function stop() {
+  want = false
+  if (restartHandle) clearTimeout(restartHandle)
+  restartHandle = null
+  if (timerHandle) clearInterval(timerHandle)
+  timerHandle = null
+  recognition && recognition.stop()
+  recognition = null
+  micEl.textContent = '开始聆听'
+  micEl.classList.remove('on')
+  liveEl.textContent = '未定稿的识别结果会出现在这里。'
+  liveEl.classList.remove('has')
+}
+
+micEl.addEventListener('click', () => { want ? stop() : start() })
+
+document.getElementById('copy').addEventListener('click', async event => {
+  const text = rows.map((row, i) =>
+    (i + 1) + '. 参考：' + (row.reference || '（未标记）') + '\n   识别：' + row.text).join('\n')
+  const payload = '浏览器：' + navigator.userAgent + '\n\n' + (text || '（没有记录）')
+  try {
+    await navigator.clipboard.writeText(payload)
+    event.currentTarget.textContent = '已复制'
+  } catch {
+    event.currentTarget.textContent = '复制失败，请用下载'
+  }
+  setTimeout(() => { event.currentTarget.textContent = '复制全部' }, 1600)
+})
+
+document.getElementById('download').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ engine: navigator.userAgent, lang: 'zh-CN', rows }, null, 2)], { type: 'application/json' })
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(blob)
+  link.download = 'voice-diagnose.json'
+  link.click()
+  URL.revokeObjectURL(link.href)
+})
+
+document.getElementById('clear').addEventListener('click', () => {
+  rows.length = 0
+  document.querySelectorAll('ol.lines li').forEach(el => el.classList.remove('hit'))
+  render()
+})
+</script>
+</body>
+</html>

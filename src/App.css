@@ -1,0 +1,190 @@
+:root{font-family:Inter,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;color:#202725;background:#f8f8f5;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-width:320px}.app-shell{display:grid;grid-template-columns:340px minmax(0,1fr);height:100dvh;min-height:600px}.side-panel{display:flex;flex-direction:column;min-height:0;background:#fdfdfb;border-right:1px solid #e4e8e2;z-index:2}.brand{height:78px;display:flex;align-items:center;gap:12px;padding:0 27px;border-bottom:1px solid #ecede9}.brand-mark{width:37px;height:37px;border-radius:10px;background:#d8eadf;color:#174b36;display:grid;place-items:center}.brand strong{display:block;font-size:17px;letter-spacing:.01em}.brand small{display:block;font-size:11px;color:#7b857e;letter-spacing:.04em;margin-top:2px}.panel-content{padding:31px 26px;overflow-y:auto;flex:1;min-height:0}.section-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;color:#317953}.panel-content h1{font-size:34px;letter-spacing:-.045em;line-height:1.18;margin:16px 0 14px;font-weight:720}.intro{font-size:13px;line-height:1.8;color:#66716a;margin:0 0 28px}.recorder-card{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid #dce8df;border-radius:14px;background:#f5faf6}.mic-button{width:60px;height:60px;flex:none;border:0;border-radius:50%;background:#276a47;color:white;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 12px #276a4730}.mic-button:hover{background:#1c593a}.mic-button:disabled{opacity:.5;cursor:wait}.mic-button.is-listening{background:#c14738;box-shadow:0 0 0 8px #d65c4621;animation:pulse 1.3s ease-in-out infinite}@keyframes pulse{50%{box-shadow:0 0 0 13px #d65c4614}}.recorder-card strong{display:block;font-size:14px}.recorder-card span{display:block;font-size:11px;color:#718079;margin-top:6px}.transcript{min-height:83px;margin-top:19px;border-bottom:1px solid #e7ebe6;padding-bottom:14px}.field-label,.input-group label{display:block;font-size:11px;font-weight:700;color:#79857d;letter-spacing:.04em}.transcript p{font-size:13px;line-height:1.65;margin:8px 0 0;overflow-wrap:anywhere}.transcript p:empty{color:#9ba59d}.feedback{display:flex;align-items:flex-start;gap:9px;min-height:46px;margin:16px 0 24px;font-size:12px;line-height:1.55;color:#66716a}.feedback.success{color:#237349}.feedback.error{color:#ad4c3e}.feedback-dot{width:7px;height:7px;flex:none;border-radius:50%;background:currentColor;margin-top:6px}.input-row{display:flex;gap:7px;margin-top:9px}.input-row input{min-width:0;flex:1;height:42px;border:1px solid #dce3dc;background:white;border-radius:9px;padding:0 12px;color:#27312a;font:inherit;font-size:12px}.input-row input:focus{outline:2px solid #8dbda0;outline-offset:1px}.input-row button{height:42px;width:42px;border:0;border-radius:9px;background:#273c30;color:white;display:grid;place-items:center;cursor:pointer}.input-row button:disabled{opacity:.45;cursor:default}.examples{margin-top:32px}.section-heading{display:flex;align-items:center;justify-content:space-between;color:#7d8880;font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:11px}.examples button{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;gap:10px;border:1px solid #e8ece7;border-radius:8px;background:white;padding:11px 12px;margin-bottom:8px;color:#34443a;font:inherit;font-size:12px;cursor:pointer}.examples button:hover{border-color:#a8cdb5;background:#f7faf7}.examples button svg{color:#9aaa9e;transform:rotate(45deg);flex:none}.panel-footer{height:52px;flex:none;display:flex;align-items:center;padding:0 26px;border-top:1px solid #eceeea;color:#79847b;font-size:11px}.mode-indicator{width:7px;height:7px;border-radius:50%;background:#b8c3bb;margin-right:8px}.mode-indicator.jev{background:#3b9d67}.mode-indicator.local{background:#d49a46}.footer-separator{width:1px;height:13px;background:#d9dfd9;margin:0 13px}.workspace{display:flex;flex-direction:column;min-width:0;min-height:0;background:#f9faf8}.workspace-bar{height:61px;flex:none;background:#fff;border-bottom:1px solid #e6ebe5;display:flex;align-items:center;justify-content:space-between;padding:0 22px}.workspace-title{font-weight:650;font-size:14px}.workspace-subtitle{font-size:11px;color:#8d9990;margin-left:14px}.undo-button{display:flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid #e0e7df;border-radius:7px;background:white;color:#506057;cursor:pointer;font-size:12px}.undo-button:hover{background:#f3f7f3}.canvas-wrap{position:relative;flex:1;min-height:0}.canvas-wrap .tl-container{position:absolute;inset:0}.canvas-hint{height:43px;flex:none;display:flex;align-items:center;gap:7px;padding:0 18px;background:#fff;border-top:1px solid #e6ebe5;font-size:11px;color:#708077;min-width:0}.canvas-hint svg{flex:none}.last-command{margin-left:auto;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9aa69c}@media(max-width:760px){.app-shell{grid-template-columns:1fr;grid-template-rows:auto minmax(450px,1fr);height:auto;min-height:100dvh}.side-panel{min-height:auto;border-right:0;border-bottom:1px solid #e4e8e2}.brand{height:58px;padding:0 17px}.panel-content{padding:17px;display:grid;grid-template-columns:minmax(0,1fr);gap:0}.section-kicker,.panel-content h1,.intro,.examples{display:none}.recorder-card{padding:10px}.mic-button{height:49px;width:49px}.transcript{min-height:42px;margin-top:10px;padding-bottom:5px}.feedback{min-height:22px;margin:10px 0}.input-group{margin-bottom:4px}.panel-footer{height:37px;padding:0 17px}.workspace{height:65dvh;min-height:450px}.workspace-bar{height:48px;padding:0 12px}.workspace-subtitle,.last-command{display:none}.canvas-hint{font-size:10px;height:37px;padding:0 10px}}@media(prefers-reduced-motion:reduce){.mic-button.is-listening{animation:none}}
+
+/* The canvas keeps its editor instance mounted while the command panel is hidden. */
+.app-shell.panel-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.side-panel[hidden],
+.panel-backdrop {
+  display: none;
+}
+
+.brand > div {
+  min-width: 0;
+}
+
+.panel-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: #597266;
+  cursor: pointer;
+}
+
+.brand .panel-toggle {
+  margin-left: auto;
+}
+
+.panel-toggle:hover,
+.panel-toggle:focus-visible {
+  background: #eaf4ec;
+  color: #235c3e;
+}
+
+.panel-toggle:focus-visible,
+.compact-mic:focus-visible,
+.undo-button:focus-visible {
+  outline: 2px solid #439667;
+  outline-offset: 2px;
+}
+
+.workspace-heading,
+.workspace-actions {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.workspace-heading {
+  gap: 10px;
+}
+
+.workspace-actions {
+  gap: 10px;
+  margin-left: 16px;
+}
+
+.workspace-heading .workspace-subtitle {
+  margin-left: 4px;
+}
+
+.open-panel-toggle {
+  margin-left: -8px;
+}
+
+.compact-feedback {
+  max-width: min(28vw, 270px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #66716a;
+  font-size: 11px;
+}
+
+.compact-feedback.success { color: #237349; }
+.compact-feedback.error { color: #ad4c3e; }
+
+.compact-mic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid #2b6a49;
+  border-radius: 9px;
+  background: #2b6a49;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.compact-mic:hover { background: #20583b; }
+.compact-mic.is-listening { background: #c14738; border-color: #c14738; }
+.compact-mic:disabled { opacity: .5; cursor: wait; }
+
+@media (max-width: 760px) {
+  .app-shell,
+  .app-shell.panel-collapsed {
+    display: block;
+    position: relative;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  .panel-backdrop {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgb(22 37 28 / 35%);
+    cursor: pointer;
+  }
+
+  .side-panel {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 1001;
+    width: min(340px, calc(100% - 24px));
+    height: 100%;
+    border-right: 1px solid #dce6dd;
+    border-bottom: 0;
+    box-shadow: 10px 0 30px rgb(21 49 31 / 12%);
+  }
+
+  .panel-content {
+    display: block;
+  }
+
+  .workspace {
+    position: relative;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .workspace-heading { gap: 4px; }
+  .workspace-actions { gap: 6px; margin-left: 8px; }
+  .workspace-bar { padding-right: 8px; }
+  .workspace-title { font-size: 12px; }
+  .compact-mic { min-width: 40px; padding: 0 10px; }
+  .compact-mic span { display: none; }
+  .undo-button { min-height: 40px; padding: 0 9px; }
+  .undo-button svg { flex: none; }
+  .compact-feedback {
+    position: absolute;
+    top: 57px;
+    right: 10px;
+    z-index: 3;
+    max-width: calc(100% - 20px);
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: rgb(255 255 255 / 93%);
+    box-shadow: 0 2px 8px rgb(21 49 31 / 8%);
+  }
+}
+.queue-status { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:12px; color:#736a60; margin:16px 0; }
+.queue-status button { border:1px solid #d9d3ca; background:transparent; border-radius:6px; padding:5px 8px; cursor:pointer; }
+.queue-status button:disabled { opacity:.4; cursor:default; }
+.voice-records { padding-left:20px; max-height:150px; overflow:auto; color:#645c54; font-size:12px; line-height:1.7; }
+
+.mode-indicator.available{background:#237349}.mode-indicator.unconfigured{background:#ad813e}.mode-indicator.failed{background:#ad4c3e}
+
+/* 顶栏的品牌标记对：Jev 的站点图标与 tldraw 的图标并排，中间一个极淡的乘号。
+   类名刻意避开 .brand-mark——那是侧边栏「说画」图标的类，含 37px 尺寸和浅绿底，
+   顶栏这两个标记若沿用它，就会凭空得到一块绿色背景并被撑大。 */
+.brand-pair { display:inline-flex; align-items:center; gap:5px; }
+.pair-mark { display:block; }
+.pair-mark-round { border-radius:50%; }
+.brand-times { font-size:9px; line-height:1; color:#b9c3bb; }
+
+/* 识别引擎切换：默认自动选（本地优先），只在想对比准确率时才手动切。
+   做成一行细文本而不是按钮，免得跟「点击麦克风」抢焦点。 */
+.engine-switch { display:inline-block; margin-top:7px; padding:0; border:0; background:transparent; color:#317953; font:inherit; font-size:11px; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px; cursor:pointer; }
+.engine-switch:hover { color:#174b36; }
+
+/* 画布编号：说「第二个」时，屏幕上的数字必须和嘴里说的对上。
+   坐标在屏幕空间算（pageToScreen），所以渲染在画布变换之外，缩放时编号保持可读大小；
+   编号取位置序号而不是内部自增号，删掉一个之后不会和显示的数字错位。 */
+.canvas-order { position:absolute; inset:0; pointer-events:none; z-index:1; }
+.order-badge { position:absolute; display:grid; place-items:center; min-width:19px; height:19px; padding:0 5px; transform:translate(-50%,-50%); border:1px solid #b9c3bb; border-radius:999px; background:#fffffff2; color:#3f4a43; font-size:11px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums; }
+.order-badge.is-locked { border-style:dashed; color:#8d9990; background:#ffffffcc; }
